@@ -6,104 +6,119 @@ using System.Threading.Tasks;
 
 namespace TabelaVerdade
 {
-    class Algoritmo
-    {
-        static void Main(string[] args)
-        {
-            int qtdElementos, qtdLinhas;
-        Inicio:
-            try
-            {
-                Console.Write("Digite o número de elementos\n");
-                qtdElementos = int.Parse(Console.ReadLine());
+	public class Algoritmo
+	{
+		private static int quantidadeElementos;
 
-                //O número de linhas na tabela verdade é igual a 2 elevado ao número de elementos.
-                qtdLinhas = (int)Math.Pow(2, qtdElementos);
-                Console.Write("Número de linhas : " + qtdLinhas + "\n\n");
+		private static int quantidadeLinhas;
 
-                //Declaração de listas e Matrizes
-                List<Coluna> colunas = new List<Coluna>();
-                List<int>[] listLinha = new List<int>[qtdElementos];
-                int[,] matriz = new int[qtdLinhas, qtdElementos];
+		public static void Main(string[] args)
+		{
+			var continuar = true;
+			do
+			{
+				GerarTabela();
+				Console.WriteLine("Deseja construir uma nova tabela? (Y/N)");
+				if (Console.ReadLine() == "y" || Console.ReadLine() == "Y")
+				{
+					Console.Clear();
+					continuar = true;
+				}
+				else
+				{
+					continuar = false;
+				}
+			} while (continuar);
+			Console.ReadKey();
+		}
 
-                //Preenchimento da lista de elementos, sendo cada elemento uma "Coluna" da tabela verdade.
-                for (int i = 0; i < qtdElementos; i++)
-                {
-                    Coluna col = new Coluna();
-                    col.numero = i;
-                    //Determinando a regra de repetição de cada coluna
-                    col.regra = ((int)Math.Pow(2, i + 1)) / 2;
-                    colunas.Add(col);
-                }
+		private static void GerarTabela()
+		{
+			try
+			{
+				Console.Write("Digite o número de elementos\n");
+				quantidadeElementos = int.Parse(Console.ReadLine());
 
-                Console.Write("Tabela Verdade : \n");
-                string strColunas = "";
+				//O número de linhas na tabela verdade é igual a 2 elevado ao número de elementos.
+				quantidadeLinhas = (int)Math.Pow(2, quantidadeElementos);
+				Console.Write("Número de linhas : " + quantidadeLinhas + "\n\n");
 
-                //Criação da primeira linha da tabela, também chamada de header, onde são nomeadas as colunas.
-                foreach (Coluna col in colunas)
-                {
-                    strColunas = strColunas + Convert.ToChar(col.numero + 65) + " - ";
-                }
-                Console.WriteLine(" " + strColunas.Remove(strColunas.Length - 2));
+				//Declaração de listas e Matrizes
+				var colunas = new List<Coluna>();
+				var linha = new List<int>[quantidadeElementos];
+				var matriz = new int[quantidadeLinhas, quantidadeElementos];
+
+				//Preenchimento da lista de elementos, sendo cada elemento uma "Coluna" da tabela verdade.
+				for (var i = 0; i < quantidadeElementos; i++)
+				{
+					var col = new Coluna
+					{
+						numero = i,
+						//Determinando a regra de repetição de cada coluna
+						regra = ((int)Math.Pow(2, i + 1)) / 2
+					};
+					colunas.Add(col);
+				}
+
+				Console.Write("Tabela Verdade : \n");
+				var strColunas = "";
+
+				//Criação da primeira linha da tabela, também chamada de header, onde são nomeadas as colunas.
+				foreach (var col in colunas)
+				{
+					strColunas = $"{strColunas}{Convert.ToChar(col.numero + 65)} - ";
+				}
+				Console.WriteLine($" {strColunas.Remove(strColunas.Length - 2)}");
 
 
-                /*
+				/*
                     Para cada coluna é criado uma lista de números, já com a regra de repetição
-                implementada e preenchida.
+				    implementada e preenchida.
                 */
-                foreach (Coluna col in colunas)
-                {
-                    listLinha[col.numero] = new List<int>();
-                    for (int i = 0; i < qtdLinhas; i++)
-                    {
-                        for (int j = 0; j < col.regra; j++)
-                        {
-                            listLinha[col.numero].Add(0);
-                        }
-                        for (int j = 0; j < col.regra; j++)
-                        {
-                            listLinha[col.numero].Add(1);
-                            i++;
-                        }
-                    }
-                }
 
-                int linha = 0;
-                //Agora preenchemos a matriz com as colunas e suas listas, sendo essas suas linhas na matriz.
-                while (linha < qtdLinhas)
-                {
-                    foreach (Coluna col in colunas)
-                    {
-                        matriz[linha, col.numero] = listLinha[col.numero][linha];
-                    }
-                    linha++;
-                }
+				foreach (var col in colunas)
+				{
+					linha[col.numero] = new List<int>();
+					for (var i = 0; i < quantidadeLinhas; i++)
+					{
+						for (var j = 0; j < col.regra; j++)
+						{
+							linha[col.numero].Add(0);
+						}
+						for (var j = 0; j < col.regra; j++)
+						{
+							linha[col.numero].Add(1);
+							i++;
+						}
+					}
+				}
 
-                //Agora é só imprimir a matriz na tela e teremos uma tabela verdade.
-                for (int i = 0; i < matriz.GetLength(0); i++)
-                {
-                    for (int j = matriz.GetLength(1) - 1; j >= 0; j--)
-                    {
-                        Console.Write(" " + matriz[i, j] + "  ");
-                    }
-                    Console.WriteLine();
-                }
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Número inválido");
-            }
-            Console.WriteLine("Deseja construir uma nova tabela? (Y/N)");
-            if (Console.ReadLine() == "y" || Console.ReadLine() == "Y")
-            {
-                Console.Clear();
-                goto Inicio;
-            }
-            else
-            {
-                Console.ReadKey();
-            }
-        }
-    }
+				var indexLinha = 0;
+				//Agora preenchemos a matriz com as colunas e suas listas, sendo essas suas linhas na matriz.
+				while (indexLinha < quantidadeLinhas)
+				{
+					foreach (var col in colunas)
+					{
+						matriz[indexLinha, col.numero] = linha[col.numero][indexLinha];
+					}
+					indexLinha++;
+				}
+
+				//Agora é só imprimir a matriz na tela e teremos uma tabela verdade.
+				for (var i = 0; i < matriz.GetLength(0); i++)
+				{
+					for (var j = matriz.GetLength(1) - 1; j >= 0; j--)
+					{
+						Console.Write(" " + matriz[i, j] + "  ");
+					}
+					Console.WriteLine();
+				}
+			}
+			catch (Exception)
+			{
+				Console.WriteLine("Número inválido");
+			}
+		}
+	}
 }
 
