@@ -67,13 +67,13 @@ namespace TabelaVerdade
 			//Preenchimento da lista de elementos, sendo cada elemento uma "Coluna" da tabela verdade.
 			for (var i = 0; i < quantidadeElementos; i++)
 			{
-				var col = new Coluna
+				var coluna = new Coluna
 				{
 					numero = i,
 					//Determinando a regra de repetição de cada coluna
 					regra = ((int)Math.Pow(2, i + 1)) / 2
 				};
-				colunas.Add(col);
+				colunas.Add(coluna);
 			}
 
 			return colunas;
