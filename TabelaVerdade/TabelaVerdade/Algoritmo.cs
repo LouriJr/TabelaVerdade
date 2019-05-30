@@ -124,9 +124,9 @@ namespace TabelaVerdade
 			//Agora preenchemos a matriz com as colunas e suas listas, sendo essas suas linhas na matriz.
 			while (indexLinha < quantidadeLinhas)
 			{
-				foreach (var col in colunas)
+				foreach (var coluna in colunas)
 				{
-					matriz[indexLinha, col.numero] = colunasPreenchidas[col.numero][indexLinha];
+					matriz[indexLinha, coluna.numero] = colunasPreenchidas[coluna.numero][indexLinha];
 				}
 				indexLinha++;
 			}
