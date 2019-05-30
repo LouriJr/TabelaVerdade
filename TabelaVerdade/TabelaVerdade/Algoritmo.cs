@@ -84,9 +84,9 @@ namespace TabelaVerdade
 			var strColunas = "";
 
 			//Criação da primeira linha da tabela, também chamada de header, onde são nomeadas as colunas.
-			foreach (var col in colunas)
+			foreach (var coluna in colunas)
 			{
-				strColunas = $"{strColunas}{Convert.ToChar(col.numero + 65)} - ";
+				strColunas = $"{strColunas}{Convert.ToChar(coluna.numero + 65)} - ";
 			}
 			Console.WriteLine($" {strColunas.Remove(strColunas.Length - 2)}");
 		}
